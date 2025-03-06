@@ -1,57 +1,51 @@
-const apiKey = 'fbfda29a5d306b737e15fb0710487ba6';
+const apiKey = "fbfda29a5d306b737e15fb0710487ba6";
+const weatherIcons = {
+    "Clear": "https://assets10.lottiefiles.com/packages/lf20_tbrwjiv5.json", // Sol
+    "Clouds": "https://assets10.lottiefiles.com/packages/lf20_VAmWRg.json", // Nuvens
+    "Rain": "https://assets2.lottiefiles.com/private_files/lf30_rquf3n6v.json", // Chuva
+    "Snow": "https://assets2.lottiefiles.com/private_files/lf30_jgltrtzl.json" // Neve
+};
 
 function buscarClima() {
-    const cidade = document.getElementById("cidade-input").value;
-    if (!cidade) return alert("Digite uma cidade!");
+    const cidade = document.getElementById("cidade").value;
+    if (!cidade) {
+        alert("Por favor, digite uma cidade!");
+        return;
+    }
 
-    document.getElementById("loading").style.display = "block";
-
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${apiKey}&units=metric&lang=pt_br`;
-
-    fetch(url)
-        .then(response => response.json())
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${apiKey}&units=metric&lang=pt_br`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Cidade não encontrada!");
+            }
+            return response.json();
+        })
         .then(data => {
-            document.getElementById("loading").style.display = "none";
-            exibirDadosClima(data);
+            document.getElementById("cidade-nome").textContent = `${data.name}, ${data.sys.country}`;
+            document.getElementById("temperatura").textContent = `Temperatura: ${data.main.temp}°C`;
+            document.getElementById("descricao").textContent = `Descrição: ${data.weather[0].description}`;
+            document.getElementById("sensacao-termica").textContent = `Sensação térmica: ${data.main.feels_like}°C`;
+            document.getElementById("umidade").textContent = `Umidade: ${data.main.humidity}%`;
+
+            // Atualizar ícone animado
+            updateWeatherIcon(data.weather[0].main);
         })
         .catch(error => {
-            document.getElementById("loading").style.display = "none";
-            console.error('Erro ao buscar dados:', error);
+            alert("Erro ao buscar dados: " + error.message);
         });
 }
 
-function buscarPorLocalizacao() {
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-                buscarClimaPorCoordenadas(latitude, longitude);
-            },
-            (error) => {
-                alert("Erro ao acessar localização. Permita o acesso ao GPS.");
-                console.error(error);
-            }
-        );
-    } else {
-        alert("Geolocalização não suportada pelo seu navegador.");
-    }
-}
+function updateWeatherIcon(weatherType) {
+    const iconContainer = document.getElementById("weather-icon");
+    const iconUrl = weatherIcons[weatherType] || weatherIcons["Clear"]; // Default: Sol
 
-function buscarClimaPorCoordenadas(lat, lon) {
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=pt_br`;
-
-    fetch(url)
-        .then(response => response.json())
-        .then(data => exibirDadosClima(data))
-        .catch(error => console.error('Erro ao buscar dados:', error));
-}
-
-function exibirDadosClima(data) {
-    document.getElementById("cidade").innerText = `${data.name}, ${data.sys.country}`;
-    document.getElementById("temperatura").innerText = `🌡 ${data.main.temp.toFixed(1)}°C`;
-    document.getElementById("descricao").innerText = `${data.weather[0].description}`;
-    document.getElementById("icone").src = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
-    document.getElementById("sensacao-termica").innerText = `🌬 Sensação térmica: ${data.main.feels_like.toFixed(1)}°C`;
-    document.getElementById("umidade").innerText = `💧 Umidade: ${data.main.humidity}%`;
+    iconContainer.innerHTML = `
+        <lottie-player src="${iconUrl}" 
+            background="transparent" 
+            speed="1" 
+            style="width: 100px; height: 100px;" 
+            loop 
+            autoplay>
+        </lottie-player>
+    `;
 }

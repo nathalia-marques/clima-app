@@ -1,25 +1,26 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta de Clima</title>
+    <title>Clima App</title>
+
     <link rel="icon" type="image/png" href="icons/favicon.ico">
-    <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
 <body>
+
     <div class="container">
         <h1>Previsão do Tempo</h1>
-        <input type="text" id="cidade-input" placeholder="Digite uma cidade">
+        <input type="text" id="cidade" placeholder="Digite a cidade">
         <button onclick="buscarClima()">Buscar</button>
-        <button onclick="buscarPorLocalizacao()">Usar minha localização</button>
 
-        <div id="loading" class="loader"></div>
+        <div id="weather-icon"></div>
 
-        <div id="clima">
-            <h2 id="cidade"></h2>
-            <img id="icone" src="" alt="Ícone do clima">
+        <div id="resultado">
+            <h2 id="cidade-nome"></h2>
             <p id="temperatura"></p>
             <p id="descricao"></p>
             <p id="sensacao-termica"></p>
@@ -28,12 +29,5 @@
     </div>
 
     <script src="js/script.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-                .then(() => console.log("Service Worker registrado com sucesso!"))
-                .catch(error => console.log("Erro ao registrar o Service Worker:", error));
-        }
-    </script>
 </body>
 </html>
