@@ -40,11 +40,13 @@ function fetchPrevisao(url) {
 
 function atualizarDados(data) {
     const hoje = new Date();
+    document.getElementById("cidade-nome").innerHTML = `<strong>${data.city.name}</strong>`;
     document.getElementById("temperatura").innerText = `${Math.round(data.list[0].main.temp)}°C`;
     document.getElementById("descricao").innerText = data.list[0].weather[0].description;
     document.getElementById("umidade").innerText = `Umidade: ${data.list[0].main.humidity}%`;
     document.getElementById("sensacao-termica").innerText = `Sensação térmica: ${Math.round(data.list[0].main.feels_like)}°C`;
     document.getElementById("fase-da-lua").innerText = atualizarFaseDaLua(hoje);
+    
     atualizarAnimacaoClima(data.list[0].weather[0].main);
     atualizarPrevisao5Dias(data.list);
 }
