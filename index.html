@@ -1,33 +1,42 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clima App</title>
-
-    <link rel="icon" type="image/png" href="icons/favicon.ico">
-    <link rel="manifest" href="manifest.json">
+    <title>Previsão do Tempo</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
 <body>
-
     <div class="container">
         <h1>Previsão do Tempo</h1>
-        <input type="text" id="cidade" placeholder="Digite a cidade">
-        <button onclick="buscarClima()">Buscar</button>
-
-        <div id="weather-icon"></div>
-
-        <div id="resultado">
-            <h2 id="cidade-nome"></h2>
-            <p id="temperatura"></p>
-            <p id="descricao"></p>
-            <p id="sensacao-termica"></p>
-            <p id="umidade"></p>
+        <div class="search-container">
+            <input type="text" id="cidade" placeholder="Digite o nome da cidade">
+            <div class="button-container">
+                <button onclick="buscarPrevisao()">Buscar</button>
+                <button id="localizacao-btn">📍 Usar Minha Localização</button>
+            </div>
         </div>
+
+        <!-- Ícones principais lado a lado -->
+        <div class="icones-principais">
+            <div id="icone-container"></div>
+            <div id="fase-lua-container"></div>
+        </div>
+
+        <h2 id="temperatura"></h2>
+        <p id="descricao"></p>
+        <p id="fase-da-lua"></p>
+
+        <p id="sensacao-termica"></p>
+        <p id="umidade"></p>
+        
+        
+
+        <h2>Previsão para os próximos 5 dias</h2>
+        <div id="previsao-container" class="previsao-container"></div>
     </div>
 
-    <script src="js/script.js"></script>
+    <script src="js/script.js" defer></script>
 </body>
 </html>
